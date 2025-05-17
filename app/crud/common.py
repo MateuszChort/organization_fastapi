@@ -1,5 +1,5 @@
 from sqlmodel import Session, select
-from app.models.common import AddressKind
+from app.models.common import AddressKind, Currency
 
 
 def get_all_address_kinds(session: Session):
@@ -34,4 +34,39 @@ def update_address_kind(session: Session, id: str, data: dict):
     session.add(item)
     session.commit()
     session.refresh(item)
+    return item
+
+
+def get_all_currencies(session: Session):
+    return session.exec(select(Currency)).all()
+
+
+def get_currency(session: Session, code: str):
+    return session.get(Currency, code)
+
+
+def create_currency(session: Session, data: Currency):
+    session.add(data)
+    session.commit()
+    session.refresh(data)
+    return data
+
+
+def update_currency(session: Session, code: str, data: dict):
+    item = session.get(Currency, code)
+    if not item:
+        return None
+    for key, value in data.items():
+        setattr(item, key, value)
+    session.add(item)
+    session.commit()
+    session.refresh(item)
+    return item
+
+
+def delete_currency(session: Session, code: str):
+    item = session.get(Currency, code)
+    if item:
+        session.delete(item)
+        session.commit()
     return item

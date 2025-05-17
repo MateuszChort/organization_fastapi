@@ -1,0 +1,44 @@
+from fastapi import APIRouter, Depends, HTTPException
+from sqlmodel import Session
+from app.db.session import get_session
+from app.models.common import Currency
+from app.schemas.common import CurrencyCreate, CurrencyRead, CurrencyUpdate
+from app.crud import common as crud
+
+router = APIRouter()
+
+
+@router.get("/", response_model=list[CurrencyRead])
+def read_currencies(session: Session = Depends(get_session)):
+    return crud.get_all_currencies(session)
+
+
+@router.get("/{code}", response_model=CurrencyRead)
+def read_currency(code: str, session: Session = Depends(get_session)):
+    item = crud.get_currency(session, code)
+    if not item:
+        raise HTTPException(status_code=404, detail="Not found")
+    return item
+
+
+@router.post("/", response_model=CurrencyRead)
+def create_currency(data: CurrencyCreate, session: Session = Depends(get_session)):
+    return crud.create_currency(session, Currency(**data.dict()))
+
+
+@router.put("/{code}", response_model=CurrencyRead)
+def update_currency(
+    code: str, data: CurrencyUpdate, session: Session = Depends(get_session)
+):
+    item = crud.update_currency(session, code, data.dict(exclude_unset=True))
+    if not item:
+        raise HTTPException(status_code=404, detail="Not found")
+    return item
+
+
+@router.delete("/{code}")
+def delete_currency(code: str, session: Session = Depends(get_session)):
+    item = crud.delete_currency(session, code)
+    if not item:
+        raise HTTPException(status_code=404, detail="Not found")
+    return {"deleted": code}

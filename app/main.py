@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.api import address_kind
+from app.api import address_kind, currency
 from app.db.session import engine
 from sqlmodel import SQLModel
 
@@ -12,3 +12,4 @@ def on_startup():
 
 
 app.include_router(address_kind.router, prefix="/address_kinds", tags=["AddressKind"])
+app.include_router(currency.router, prefix="/currencies", tags=["Currency"])

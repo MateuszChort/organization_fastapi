@@ -12,3 +12,16 @@ class AddressKindRead(AddressKindCreate):
 
 class AddressKindUpdate(BaseModel):
     kind: str
+
+
+class CurrencyCreate(BaseModel):
+    code: str
+    name: str
+
+
+class CurrencyRead(CurrencyCreate):
+    pass
+
+
+class CurrencyUpdate(BaseModel):
+    name: str
