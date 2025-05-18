@@ -10,19 +10,19 @@ router = APIRouter()
 
 @router.get("/", response_model=list[AddressKindRead])
 def read_address_kinds(session: Session = Depends(get_session)):
-    return crud.get_all_address_kinds(session)
+    return crud.get_all(session, AddressKind)
 
 
 @router.post("/", response_model=AddressKindRead)
 def create_address_kind(
     data: AddressKindCreate, session: Session = Depends(get_session)
 ):
-    return crud.create_address_kind(session, AddressKind(**data.dict()))
+    return crud.create(session, AddressKind(**data.dict()))
 
 
 @router.get("/{id}", response_model=AddressKindRead)
 def read_address_kind(id: str, session: Session = Depends(get_session)):
-    item = crud.get_address_kind(session, id)
+    item = crud.get_by_id(session, AddressKind, id)
     if not item:
         raise HTTPException(status_code=404, detail="Not found")
     return item
@@ -32,7 +32,7 @@ def read_address_kind(id: str, session: Session = Depends(get_session)):
 def update_address_kind(
     id: str, data: AddressKindUpdate, session: Session = Depends(get_session)
 ):
-    item = crud.update_address_kind(session, id, data.dict(exclude_unset=True))
+    item = crud.update(session, AddressKind, id, data.dict(exclude_unset=True))
     if not item:
         raise HTTPException(status_code=404, detail="Not found")
     return item
@@ -40,7 +40,7 @@ def update_address_kind(
 
 @router.delete("/{id}")
 def delete_address_kind(id: str, session: Session = Depends(get_session)):
-    item = crud.delete_address_kind(session, id)
+    item = crud.delete(session, AddressKind, id)
     if not item:
         raise HTTPException(status_code=404, detail="Not found")
     return {"deleted": id}

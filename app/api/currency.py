@@ -10,12 +10,12 @@ router = APIRouter()
 
 @router.get("/", response_model=list[CurrencyRead])
 def read_currencies(session: Session = Depends(get_session)):
-    return crud.get_all_currencies(session)
+    return crud.get_all(session, Currency)
 
 
 @router.get("/{code}", response_model=CurrencyRead)
 def read_currency(code: str, session: Session = Depends(get_session)):
-    item = crud.get_currency(session, code)
+    item = crud.get_by_id(session, Currency, code)
     if not item:
         raise HTTPException(status_code=404, detail="Not found")
     return item
@@ -23,14 +23,14 @@ def read_currency(code: str, session: Session = Depends(get_session)):
 
 @router.post("/", response_model=CurrencyRead)
 def create_currency(data: CurrencyCreate, session: Session = Depends(get_session)):
-    return crud.create_currency(session, Currency(**data.dict()))
+    return crud.create(session, Currency(**data.dict(exclude_unset=True)))
 
 
 @router.put("/{code}", response_model=CurrencyRead)
 def update_currency(
     code: str, data: CurrencyUpdate, session: Session = Depends(get_session)
 ):
-    item = crud.update_currency(session, code, data.dict(exclude_unset=True))
+    item = crud.update(session, Currency, code, data.dict(exclude_unset=True))
     if not item:
         raise HTTPException(status_code=404, detail="Not found")
     return item
@@ -38,7 +38,7 @@ def update_currency(
 
 @router.delete("/{code}")
 def delete_currency(code: str, session: Session = Depends(get_session)):
-    item = crud.delete_currency(session, code)
+    item = crud.delete(session, Currency, code)
     if not item:
         raise HTTPException(status_code=404, detail="Not found")
     return {"deleted": code}

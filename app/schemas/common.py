@@ -55,3 +55,27 @@ class LocationUpdate(BaseModel):
     code: Optional[str] = None
     location_kind: Optional[LocationKind] = None
     parent_location_id: Optional[int] = None
+
+
+class BankAccountBase(BaseModel):
+    number: str
+    is_active: bool = True
+    main_account: bool = False
+    currency_code: str
+    organization_id: Optional[int] = None
+
+
+class BankAccountCreate(BankAccountBase):
+    pass
+
+
+class BankAccountRead(BankAccountBase):
+    id: int
+
+
+class BankAccountUpdate(BaseModel):
+    number: Optional[str] = None
+    is_active: Optional[bool] = None
+    main_account: Optional[bool] = None
+    currency_code: Optional[str] = None
+    organization_id: Optional[int] = None

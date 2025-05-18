@@ -10,12 +10,12 @@ router = APIRouter()
 
 @router.get("/", response_model=list[LocationRead])
 def read_locations(session: Session = Depends(get_session)):
-    return crud.get_all_locations(session)
+    return crud.get_all(session, Location)
 
 
 @router.get("/{id}", response_model=LocationRead)
 def read_location(id: int, session: Session = Depends(get_session)):
-    item = crud.get_location(session, id)
+    item = crud.get_by_id(session, Location, id)
     if not item:
         raise HTTPException(status_code=404, detail="Not found")
     return item
@@ -23,14 +23,14 @@ def read_location(id: int, session: Session = Depends(get_session)):
 
 @router.post("/", response_model=LocationRead)
 def create_location(data: LocationCreate, session: Session = Depends(get_session)):
-    return crud.create_location(session, Location(**data.dict()))
+    return crud.create(session, Location(**data.dict(exclude_unset=True)))
 
 
 @router.put("/{id}", response_model=LocationRead)
 def update_location(
     id: int, data: LocationUpdate, session: Session = Depends(get_session)
 ):
-    item = crud.update_location(session, id, data.dict(exclude_unset=True))
+    item = crud.update(session, Location, id, data.dict(exclude_unset=True))
     if not item:
         raise HTTPException(status_code=404, detail="Not found")
     return item
@@ -38,7 +38,7 @@ def update_location(
 
 @router.delete("/{id}")
 def delete_location(id: int, session: Session = Depends(get_session)):
-    item = crud.delete_location(session, id)
+    item = crud.delete(session, Location, id)
     if not item:
         raise HTTPException(status_code=404, detail="Not found")
     return {"deleted": id}

@@ -1,32 +1,30 @@
 from sqlmodel import Session, select
-from app.models.common import AddressKind, Currency, Location
+from typing import Type, TypeVar, Optional
+
+ModelType = TypeVar("ModelType")
 
 
-def get_all_address_kinds(session: Session):
-    return session.exec(select(AddressKind)).all()
+def get_all(session: Session, model: Type[ModelType]) -> list[ModelType]:
+    return session.exec(select(model)).all()
 
 
-def get_address_kind(session: Session, id: str):
-    return session.get(AddressKind, id)
+def get_by_id(
+    session: Session, model: Type[ModelType], id: int | str
+) -> Optional[ModelType]:
+    return session.get(model, id)
 
 
-def create_address_kind(session: Session, data: AddressKind):
-    session.add(data)
+def create(session: Session, instance: ModelType) -> ModelType:
+    session.add(instance)
     session.commit()
-    session.refresh(data)
-    return data
+    session.refresh(instance)
+    return instance
 
 
-def delete_address_kind(session: Session, id: str):
-    item = session.get(AddressKind, id)
-    if item:
-        session.delete(item)
-        session.commit()
-    return item
-
-
-def update_address_kind(session: Session, id: str, data: dict):
-    item = session.get(AddressKind, id)
+def update(
+    session: Session, model: Type[ModelType], id: int | str, data: dict
+) -> Optional[ModelType]:
+    item = session.get(model, id)
     if not item:
         return None
     for key, value in data.items():
@@ -37,70 +35,10 @@ def update_address_kind(session: Session, id: str, data: dict):
     return item
 
 
-def get_all_currencies(session: Session):
-    return session.exec(select(Currency)).all()
-
-
-def get_currency(session: Session, code: str):
-    return session.get(Currency, code)
-
-
-def create_currency(session: Session, data: Currency):
-    session.add(data)
-    session.commit()
-    session.refresh(data)
-    return data
-
-
-def update_currency(session: Session, code: str, data: dict):
-    item = session.get(Currency, code)
-    if not item:
-        return None
-    for key, value in data.items():
-        setattr(item, key, value)
-    session.add(item)
-    session.commit()
-    session.refresh(item)
-    return item
-
-
-def delete_currency(session: Session, code: str):
-    item = session.get(Currency, code)
-    if item:
-        session.delete(item)
-        session.commit()
-    return item
-
-
-def get_all_locations(session: Session):
-    return session.exec(select(Location)).all()
-
-
-def get_location(session: Session, id: int):
-    return session.get(Location, id)
-
-
-def create_location(session: Session, data: Location):
-    session.add(data)
-    session.commit()
-    session.refresh(data)
-    return data
-
-
-def update_location(session: Session, id: int, data: dict):
-    item = session.get(Location, id)
-    if not item:
-        return None
-    for key, value in data.items():
-        setattr(item, key, value)
-    session.add(item)
-    session.commit()
-    session.refresh(item)
-    return item
-
-
-def delete_location(session: Session, id: int):
-    item = session.get(Location, id)
+def delete(
+    session: Session, model: Type[ModelType], id: int | str
+) -> Optional[ModelType]:
+    item = session.get(model, id)
     if item:
         session.delete(item)
         session.commit()
