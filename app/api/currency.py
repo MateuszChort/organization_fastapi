@@ -22,7 +22,7 @@ def read_currency(code: str, session: Session = Depends(get_session)):
     return item
 
 
-@router.post("/", response_model=CurrencyRead)
+@router.post("/", response_model=CurrencyRead, status_code=201)
 def create_currency(data: CurrencyCreate, session: Session = Depends(get_session)):
     return crud.create(session, Currency(**data.dict(exclude_unset=True)))
 
