@@ -24,14 +24,14 @@ def read_currency(code: str, session: Session = Depends(get_session)):
 
 @router.post("/", response_model=CurrencyRead, status_code=201)
 def create_currency(data: CurrencyCreate, session: Session = Depends(get_session)):
-    return crud.create(session, Currency(**data.dict(exclude_unset=True)))
+    return crud.create(session, Currency(**data.model_dump(exclude_unset=True)))
 
 
 @router.put("/{code}", response_model=CurrencyRead)
 def update_currency(
     code: str, data: CurrencyUpdate, session: Session = Depends(get_session)
 ):
-    item = crud.update(session, Currency, code, data.dict(exclude_unset=True))
+    item = crud.update(session, Currency, code, data.model_dump(exclude_unset=True))
     if not item:
         raise HTTPException(status_code=404, detail="Not found")
     return item

@@ -24,14 +24,14 @@ def read_account(id: int, session: Session = Depends(get_session)):
 
 @router.post("/", response_model=BankAccountRead, status_code=201)
 def create_account(data: BankAccountCreate, session: Session = Depends(get_session)):
-    return crud.create(session, BankAccount(**data.dict()))
+    return crud.create(session, BankAccount(**data.model_dump()))
 
 
 @router.put("/{id}", response_model=BankAccountRead)
 def update_account(
     id: int, data: BankAccountUpdate, session: Session = Depends(get_session)
 ):
-    account = crud.update(session, BankAccount, id, data.dict(exclude_unset=True))
+    account = crud.update(session, BankAccount, id, data.model_dump(exclude_unset=True))
     if not account:
         raise HTTPException(status_code=404, detail="Not found")
     return account

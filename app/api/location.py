@@ -24,14 +24,14 @@ def read_location(id: int, session: Session = Depends(get_session)):
 
 @router.post("/", response_model=LocationRead, status_code=201)
 def create_location(data: LocationCreate, session: Session = Depends(get_session)):
-    return crud.create(session, Location(**data.dict(exclude_unset=True)))
+    return crud.create(session, Location(**data.model_dump(exclude_unset=True)))
 
 
 @router.put("/{id}", response_model=LocationRead)
 def update_location(
     id: int, data: LocationUpdate, session: Session = Depends(get_session)
 ):
-    item = crud.update(session, Location, id, data.dict(exclude_unset=True))
+    item = crud.update(session, Location, id, data.model_dump(exclude_unset=True))
     if not item:
         raise HTTPException(status_code=404, detail="Not found")
     return item

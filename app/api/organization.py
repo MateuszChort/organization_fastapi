@@ -62,7 +62,7 @@ def update_organization(
     if not org:
         raise HTTPException(status_code=404, detail="Organization not found")
 
-    org_data = data.dict(exclude_unset=True, exclude={"address_ids"})
+    org_data = data.model_dump(exclude_unset=True, exclude={"address_ids"})
 
     for key, value in org_data.items():
         setattr(org, key, value)
