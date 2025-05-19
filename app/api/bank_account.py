@@ -22,7 +22,7 @@ def read_account(id: int, session: Session = Depends(get_session)):
     return account
 
 
-@router.post("/", response_model=BankAccountRead)
+@router.post("/", response_model=BankAccountRead, status_code=201)
 def create_account(data: BankAccountCreate, session: Session = Depends(get_session)):
     return crud.create(session, BankAccount(**data.dict()))
 
