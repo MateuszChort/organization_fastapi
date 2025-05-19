@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
+
+from app.crud import common as crud
 from app.db.session import get_session
 from app.models.common import BankAccount
 from app.schemas.common import BankAccountCreate, BankAccountRead, BankAccountUpdate
-from app.crud import common as crud
 
 router = APIRouter()
 

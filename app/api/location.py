@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
+
+from app.crud import common as crud
 from app.db.session import get_session
 from app.models.common import Location
 from app.schemas.common import LocationCreate, LocationRead, LocationUpdate
-from app.crud import common as crud
 
 router = APIRouter()
 

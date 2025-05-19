@@ -1,8 +1,9 @@
-from typing import Optional, List, TYPE_CHECKING
-from sqlmodel import SQLModel, Field, Relationship
+from typing import TYPE_CHECKING, List, Optional
+
+from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
-    from app.models.common import Location, AddressKind, Organization
+    from app.models.common import AddressKind, Location, Organization
 
 
 class OrganizationAddressLink(SQLModel, table=True):
@@ -20,7 +21,7 @@ class Address(SQLModel, table=True):
     address: str = Field(max_length=255)
 
     location_id: int = Field(foreign_key="location.id")
-    kind_id: int = Field(foreign_key="addresskind.id")
+    kind_id: int = Field(foreign_key="address_kind.id")
 
     location: Optional["Location"] = Relationship()
     kind: Optional["AddressKind"] = Relationship()

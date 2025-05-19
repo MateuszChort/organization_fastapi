@@ -1,14 +1,14 @@
-from sqlmodel import SQLModel, Field, Relationship
-from typing import Optional
 from enum import Enum
+from typing import TYPE_CHECKING, Optional
 
-from typing import TYPE_CHECKING
+from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
     from app.models.organization import Organization
 
 
 class AddressKind(SQLModel, table=True):
+    __tablename__ = "address_kind"
     id: str = Field(primary_key=True, max_length=20)
     kind: str
 

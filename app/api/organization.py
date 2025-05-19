@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import Session, select
 from typing import List
 
+from fastapi import APIRouter, Depends, HTTPException
+from sqlmodel import Session, select
+
 from app.db.session import get_session
-from app.models.organization import Organization, Address
+from app.models.organization import Address, Organization
 from app.schemas.organization import (
     OrganizationCreate,
     OrganizationRead,

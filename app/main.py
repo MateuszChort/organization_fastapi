@@ -1,7 +1,8 @@
 from fastapi import FastAPI
-from app.api import address_kind, currency, location, bank_account, organization
-from app.db.session import engine
 from sqlmodel import SQLModel
+
+from app.api import address_kind, bank_account, currency, location, organization
+from app.db.session import engine
 
 app = FastAPI()
 

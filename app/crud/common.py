@@ -1,5 +1,6 @@
+from typing import Optional, Type, TypeVar
+
 from sqlmodel import Session, select
-from typing import Type, TypeVar, Optional
 
 ModelType = TypeVar("ModelType")
 
