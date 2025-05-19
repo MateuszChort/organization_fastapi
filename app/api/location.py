@@ -22,7 +22,7 @@ def read_location(id: int, session: Session = Depends(get_session)):
     return item
 
 
-@router.post("/", response_model=LocationRead)
+@router.post("/", response_model=LocationRead, status_code=201)
 def create_location(data: LocationCreate, session: Session = Depends(get_session)):
     return crud.create(session, Location(**data.dict(exclude_unset=True)))
 
