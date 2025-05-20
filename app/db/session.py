@@ -1,6 +1,6 @@
 from sqlmodel import Session, create_engine
 
-DATABASE_URL = "sqlite:///./test.db"  # później zamienimy na PostgreSQL
+DATABASE_URL = "sqlite:///./test.db"
 
 engine = create_engine(DATABASE_URL, echo=True)
 
