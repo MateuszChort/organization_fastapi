@@ -85,6 +85,27 @@ def test_update_location(client: TestClient):
     assert put_response.json()["name"] == "new"
 
 
+def test_update_location_with_same_parent(client: TestClient):
+    post_response = client.post(
+        "/locations",
+        json={
+            "name": "Test Location 6",
+            "code": "test_location_code_6",
+            "location_kind": "CR",
+        },
+    )
+    location_id = post_response.json()["id"]
+
+    put_response = client.put(
+        f"/locations/{location_id}",
+        json={"name": "new", "location_kind": "RG", "parent_location_id": location_id},
+    )
+    assert put_response.status_code == 400
+    assert put_response.json() == {
+        "detail": "Parent location cannot reference the same object"
+    }
+
+
 def test_delete_location(client: TestClient):
     post_response = client.post(
         "/locations",

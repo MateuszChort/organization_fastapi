@@ -31,6 +31,12 @@ def create_location(data: LocationCreate, session: Session = Depends(get_session
 def update_location(
     id: int, data: LocationUpdate, session: Session = Depends(get_session)
 ):
+    if data.parent_location_id is not None and data.parent_location_id == id:
+        raise HTTPException(
+            status_code=400,
+            detail="Parent location cannot reference the same object",
+        )
+
     item = crud.update(session, Location, id, data.model_dump(exclude_unset=True))
     if not item:
         raise HTTPException(status_code=404, detail="Not found")
