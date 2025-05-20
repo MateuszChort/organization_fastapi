@@ -35,3 +35,17 @@ def client_fixture(session):
     app.dependency_overrides[get_session] = get_session_override
     with TestClient(app) as c:
         yield c
+
+
+@pytest.fixture(name="nip_search_mock")
+def fixture_nip_search_mock(mocker):
+    mock = mocker.patch("app.api.nip.nip_search")
+    mock.return_value = [{"NIP": "123456"}]
+    return mock
+
+
+@pytest.fixture(name="nip_search_mock_404")
+def fixture_nip_search_mock_404(mocker):
+    mock = mocker.patch("app.api.nip.nip_search")
+    mock.return_value = [{"ErrorCode": "4"}]
+    return mock
