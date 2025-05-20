@@ -21,7 +21,7 @@ class Address(SQLModel, table=True):
     address: str = Field(max_length=255)
 
     location_id: int = Field(foreign_key="location.id")
-    kind_id: int = Field(foreign_key="address_kind.id")
+    kind_id: str = Field(foreign_key="address_kind.id")
 
     location: Optional["Location"] = Relationship()
     kind: Optional["AddressKind"] = Relationship()

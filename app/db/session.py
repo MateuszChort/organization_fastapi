@@ -1,6 +1,7 @@
+import os
 from sqlmodel import Session, create_engine
 
-DATABASE_URL = "sqlite:///./test.db"
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
 
 engine = create_engine(DATABASE_URL, echo=True)
 
